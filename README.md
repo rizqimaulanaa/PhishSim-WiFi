@@ -2,7 +2,7 @@
 
 **PhishSim-WiFi** adalah alat simulasi *Rogue Access Point* dan *Captive Portal* berbasis Python (Flask). Dibuat secara khusus untuk keperluan edukasi, praktikum laboratorium keamanan jaringan, dan *Security Awareness Training* (Pelatihan Kesadaran Keamanan) bagi institusi maupun perusahaan.
 
-## 📸 Screenshot Tampilan
+## 📸 Screen
 
 **Dashboard Monitoring Admin (Real-Time WIB)**
 <img src="static/dashboard-monitoring.png" width="800" alt="Tampilan Dashboard">
@@ -10,7 +10,7 @@
 **Tampilan Captive Portal (Landing Page Korban)**
 <img src="static/landingpage.png" width="400" alt="Tampilan Login">
 
-## 🚀 Fitur Utama
+## 🚀 Fitur
 
 - **All-in-One Deployment:** Menggabungkan `hostapd`, `dnsmasq`, `iptables`, dan Flask Web Server dalam satu eksekusi *script* yang praktis.
 - **Advanced Fingerprinting:** Deteksi otomatis Sistem Operasi, Browser, Tipe Perangkat (HP Smartphone vs Laptop/PC), dan deteksi jenis MAC Address (Fisik Pabrik vs Acak/Privasi).
@@ -22,7 +22,7 @@
 - **Export & Import Target:** Unduh laporan keamanan ke dalam format CSV, dan *upload* daftar MAC Address target/karyawan.
 - **WIB Timezone:** Seluruh log waktu dicatat dalam Waktu Indonesia Barat (UTC+7).
 
-## 🛠️ Persyaratan Sistem
+## 🛠️ Requirements
 
 Proyek ini dirancang untuk dijalankan di atas sistem operasi berbasis Debian/Ubuntu (direkomendasikan **Kali Linux**).
 
