@@ -219,7 +219,7 @@ def login_page():
 
 @app.route('/connected')
 def connected_page():
-    return render_template('connected.html', ssid=SSID)
+    return render_template('konek.html', ssid=SSID)
 
 @app.route('/<path:path>')
 def catch_all(path):
