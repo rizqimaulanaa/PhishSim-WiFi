@@ -42,7 +42,7 @@ Dependensi Python (Lihat `requirements.txt`):
 
 ## 📥 Instalasi & Penggunaan
 
-1. **Clone repository ini ke mesin lokal Anda:**
+1. **Clone repository:**
    ```bash
    git clone https://github.com/rizqimaulanaa/PhishSim-Wifi.gi
    cd PhishSim-WiFi
