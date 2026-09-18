@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peringatan Keamanan Wi-Fi</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .warning-box {
+            width: 90%;
+            max-width: 560px;
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0,0,0,.12);
+            border-top: 6px solid #d93025;
+        }
+
+        .icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #d93025;
+            margin: 0 0 15px;
+            font-size: 28px;
+        }
+
+        .message {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .alert {
+            margin: 25px 0;
+            padding: 16px;
+            background: #fff3cd;
+            border: 1px solid #ffe69c;
+            border-radius: 10px;
+            color: #664d03;
+            text-align: left;
+        }
+
+        .steps {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 25px;
+            line-height: 1.8;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 22px;
+            background: #d93025;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="warning-box">
+
+        <div class="icon">⚠️</div>
+
+        <h1>Peringatan Keamanan</h1>
+
+        <p class="message">
+            Koneksi Wi-Fi yang sedang digunakan terindikasi sebagai
+            <strong>jaringan Wi-Fi yang tidak aman / berpotensi phishing.</strong>
+        </p>
+
+        <div class="alert">
+            <strong>Jangan masukkan informasi sensitif.</strong><br>
+            Hindari memasukkan password, PIN, OTP, data kartu,
+            atau informasi pribadi ketika terhubung ke jaringan ini.
+        </div>
+
+        <h3>Yang sebaiknya dilakukan:</h3>
+
+        <ol class="steps">
+            <li>Putuskan koneksi dari Wi-Fi tersebut.</li>
+            <li>Gunakan jaringan Wi-Fi yang terpercaya.</li>
+            <li>Pastikan alamat website menggunakan HTTPS.</li>
+            <li>Jangan memberikan OTP atau password kepada pihak lain.</li>
+            <li>Jika ini merupakan jaringan kantor, hubungi tim IT/security.</li>
+        </ol>
+
+        <a href="#" class="button" onclick="alert('Ini adalah simulasi security awareness.'); return false;">
+            Saya Mengerti
+        </a>
+
+        <div class="footer">
+            Security Awareness Simulation
+        </div>
+
+    </div>
+
+</body>
+</html>

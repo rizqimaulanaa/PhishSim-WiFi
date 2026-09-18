@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connected - {{ ssid }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e0e0e0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+        .check { font-size: 72px; margin-bottom: 16px; }
+        h1 { color: #4caf50; font-size: 28px; margin-bottom: 8px; }
+        p { color: #90a4ae; font-size: 15px; margin-bottom: 24px; line-height: 1.6; }
+        .info-box {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            font-size: 13px;
+            color: #a5d6a7;
+        }
+        .speed { font-size: 36px; font-weight: 700; color: #4fc3f7; margin: 8px 0; }
+        .speed span { font-size: 16px; color: #78909c; }
+        .footer { margin-top: 32px; font-size: 11px; color: #546e7a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="check">✅</div>
+        <h1>Connected!</h1>
+        <p>You are now connected to <strong>{{ ssid }}</strong></p>
+
+        <div class="speed">100 <span>Mbps</span></div>
+        <p style="margin-bottom: 8px;">Estimated connection speed</p>
+
+        <div class="info-box">
+            ⏱️ Session Duration: <strong>60 minutes</strong><br>
+            📊 Data Limit: <strong>500 MB</strong><br>
+            🔄 Auto-renew on reconnect
+        </div>
+
+        <p>You can now close this page and browse freely.</p>
+
+        <div class="footer">
+            Powered by MikroTik RouterOS v7.15<br>
+            Session will expire automatically
+        </div>
+    </div>
+</body>
+</html>
