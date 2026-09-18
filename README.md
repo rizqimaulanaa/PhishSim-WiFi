@@ -43,6 +43,7 @@ Dependensi Python (Lihat `requirements.txt`):
    ```bash
    git clone https://github.com/rizqimaulanaa/PhishSim-Wifi.gi
    cd PhishSim-WiFi
+   pip install -r requirements.txt
    chmod +x install.sh
    ./install.sh
    sudo python3 portal.py --interface wlan0 --ssid "KAMPUS_FREE_WIFI"
