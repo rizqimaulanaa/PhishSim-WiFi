@@ -8,7 +8,7 @@
 <img src="static/dashboard-monitoring.png" width="800" alt="Tampilan Dashboard">
 
 **Tampilan Captive Portal (Landing Page Korban)**
-<img src="static/landingpage.png" width="400" alt="Tampilan Login">
+<img src="static/landingpage.png" width="800" alt="Tampilan Login">
 
 ## 🚀 Fitur
 
