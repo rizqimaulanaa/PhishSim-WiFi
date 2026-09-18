@@ -11,7 +11,7 @@
 <img src="static/landingpage.png" width="800" alt="Tampilan Login">
 
 **Tampilan Security Awareness**
-<img src="static/connected.png" width="800" alt="Tampilan Security Awareness">
+<img src="static/connected.jpg" width="800" alt="Tampilan Security Awareness">
 
 ## 🚀 Fitur
 
